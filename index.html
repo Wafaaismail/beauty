@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>حاسبة عروض ليدي طبطب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf3ef;
+  --surface:#fff;
+  --surface-alt:#fff9f4;
+  --border:#eadfd9;
+  --text:#3a2530;
+  --muted:#8c7481;
+  --primary:#b85c7a;
+  --primary-dark:#93415c;
+  --primary-light:#d98ba6;
+  --primary-tint:#fceef3;
+  --success:#6e8060;
+  --success-bg:#e3eadb;
+  --success-tint:#f0f5ea;
+  --warning-bg:#f3e7d2;
+  --warning-border:#e4cfa0;
+  --shadow-sm:0 1px 3px rgba(58,37,48,.06);
+  --shadow-md:0 4px 16px rgba(58,37,48,.08);
+  --shadow-lg:0 8px 32px rgba(58,37,48,.12);
+  --radius:16px;
+  --radius-sm:10px;
+  --radius-xs:9px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:"Cairo",Arial,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+body{padding:18px 12px 100px;min-height:100vh}
+main{max-width:700px;margin:auto}
+
+/* Header */
+header{
+  background:linear-gradient(135deg,var(--surface-alt),var(--primary-tint));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px 20px;
+  margin-bottom:14px;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+}
+header::before{
+  content:"";
+  position:absolute;
+  top:-30px;left:-30px;
+  width:120px;height:120px;
+  background:radial-gradient(circle,rgba(184,92,122,.08),transparent 70%);
+  border-radius:50%;
+}
+.header-tag{color:var(--primary-dark);font-weight:700;font-size:13px;letter-spacing:.3px}
+h1{font-size:24px;margin:6px 0 4px;font-weight:800}
+header .sub{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* Cards */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px;
+  margin-bottom:14px;
+  box-shadow:var(--shadow-sm);
+  transition:box-shadow .2s ease;
+}
+.card:hover{box-shadow:var(--shadow-md)}
+.title{font-weight:700;margin-bottom:12px;font-size:15px;display:flex;align-items:center;gap:8px}
+.title .step{
+  display:inline-flex;
+  align-items:center;justify-content:center;
+  width:26px;height:26px;
+  background:var(--primary);color:#fff;
+  border-radius:50%;font-size:13px;font-weight:700;
+  flex-shrink:0;
+}
+
+/* Search */
+input{
+  width:100%;height:46px;
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:0 14px;font-size:15px;
+  font-family:inherit;
+  margin-bottom:12px;
+  background:var(--bg);
+  transition:border-color .2s,box-shadow .2s,background .2s;
+}
+input:focus{
+  outline:none;
+  border-color:var(--primary-light);
+  box-shadow:0 0 0 3px rgba(184,92,122,.12);
+  background:var(--surface);
+}
+
+/* Tabs */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{height:3px}
+.tabs::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.tabs button{
+  border:1px solid var(--border);
+  background:var(--surface);
+  border-radius:var(--radius-xs);
+  padding:8px 14px;
+  font-size:14px;
+  font-family:inherit;
+  font-weight:600;
+  color:var(--text);
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all .2s ease;
+}
+.tabs button:hover{border-color:var(--primary-light);color:var(--primary)}
+.tabs button.active{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary);
+  box-shadow:0 2px 8px rgba(184,92,122,.25);
+}
+
+/* Products */
+.products{max-height:380px;overflow-y:auto;border-top:1px solid var(--border);margin-top:2px}
+.products::-webkit-scrollbar{width:4px}
+.products::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.product{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 4px;
+  border-bottom:1px solid var(--border);
+  gap:10px;
+  transition:background .15s ease;
+  animation:fadeIn .25s ease;
+}
+.product:hover{background:var(--surface-alt)}
+.product:last-child{border-bottom:none}
+.name{font-weight:700;font-size:14px;line-height:1.4}
+.price{font-size:12px;color:var(--muted);margin-top:3px;font-weight:600}
+.qty{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.qty button{
+  width:34px;height:34px;padding:0;
+  font-size:20px;font-weight:700;
+  border:1px solid var(--border);
+  background:var(--surface);
+  border-radius:var(--radius-xs);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s ease;
+  color:var(--text);
+  font-family:inherit;
+}
+.qty button:hover{background:var(--primary);color:#fff;border-color:var(--primary);transform:scale(1.08)}
+.qty button:active{transform:scale(.95)}
+.qty b{
+  min-width:22px;text-align:center;
+  font-size:15px;font-weight:700;
+  transition:transform .15s ease;
+}
+.qty b.bump{animation:bump .3s ease}
+
+/* Cart */
+.cartrow{
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px dashed var(--border);
+  padding:8px 0;font-size:14px;
+  animation:fadeIn .25s ease;
+}
+.cartrow b{font-weight:700}
+.cartrow span{color:var(--muted);font-weight:600}
+.total{font-weight:800;padding-top:12px;font-size:15px}
+.empty{color:var(--muted);text-align:center;padding:24px 16px;font-size:14px}
+
+/* Offer cards */
+.offer{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px;
+  margin-bottom:14px;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  transition:all .3s ease;
+  animation:slideUp .35s ease;
+}
+.offer:hover{box-shadow:var(--shadow-md)}
+.offer.best{
+  background:linear-gradient(135deg,var(--success-bg),var(--success-tint));
+  border-color:var(--success);
+  box-shadow:0 4px 20px rgba(110,128,96,.15);
+}
+.offer.best:hover{box-shadow:0 8px 28px rgba(110,128,96,.2)}
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--success);color:#fff;
+  border-radius:20px;padding:5px 12px;
+  font-size:12px;font-weight:700;
+  margin-bottom:10px;
+  animation:badgePop .4s ease;
+}
+.offer h3{margin:0 0 5px;font-size:16px;font-weight:800}
+.offer .sub{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.offer-price{font-size:26px;font-weight:800;letter-spacing:-.5px}
+.offer.best .offer-price{color:var(--success)}
+.save{color:var(--success);font-weight:700;margin-top:6px;font-size:14px}
+
+/* Savings bar */
+.savings-bar{
+  height:6px;border-radius:3px;
+  background:var(--border);
+  margin-top:10px;overflow:hidden;
+}
+.savings-bar .fill{
+  height:100%;border-radius:3px;
+  background:linear-gradient(90deg,var(--success),#8ba87a);
+  transition:width .5s cubic-bezier(.4,0,.2,1);
+}
+.offer:not(.best) .savings-bar .fill{
+  background:linear-gradient(90deg,var(--primary-light),var(--primary));
+}
+
+/* Verdict */
+.verdict{
+  background:var(--warning-bg);
+  border:1px solid var(--warning-border);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:14px;
+  line-height:1.8;
+  font-size:14px;
+  font-weight:600;
+  box-shadow:var(--shadow-sm);
+  animation:slideUp .35s ease;
+}
+.verdict b{font-weight:800}
+
+/* Reset */
+.reset{
+  width:100%;height:48px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  border-radius:var(--radius-sm);
+  font-size:15px;font-weight:700;
+  font-family:inherit;
+  color:var(--text);
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.reset:hover{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 4px 14px rgba(184,92,122,.2)}
+.reset:active{transform:scale(.98)}
+
+small{color:var(--muted);display:block;margin-top:10px;line-height:1.7;font-size:12px}
+
+/* Sticky cart bar — mobile only */
+.cart-bar{
+  display:none;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  box-shadow:0 -4px 20px rgba(58,37,48,.1);
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  z-index:100;
+  transform:translateY(100%);
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  width:100%;
+}
+.cart-bar.visible{transform:translateY(0)}
+.cart-bar-inner{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.cart-bar-info{display:flex;flex-direction:column;gap:1px}
+.cart-bar-count{font-size:12px;color:var(--muted);font-weight:600}
+.cart-bar-total{font-size:17px;font-weight:800}
+.cart-bar-btn{
+  background:var(--primary);color:#fff;
+  border:none;border-radius:var(--radius-sm);
+  padding:12px 18px;
+  font-size:14px;font-weight:700;
+  font-family:inherit;
+  cursor:pointer;
+  transition:all .2s ease;
+  white-space:nowrap;
+  min-height:44px;
+  display:flex;align-items:center;
+}
+.cart-bar-btn:active{background:var(--primary-dark);transform:scale(.96)}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bump{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+@keyframes badgePop{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+
+@media(max-width:600px){
+  body{padding:14px 10px 90px}
+  header{padding:18px 16px}
+  h1{font-size:21px}
+  .card{padding:14px}
+  .offer-price{font-size:22px}
+  .cart-bar{display:block}
+  .qty button{width:38px;height:38px}
+  .qty{gap:8px}
+  .tabs button{padding:10px 14px;font-size:15px}
+  input{height:48px;font-size:16px}
+  .reset{height:50px}
+}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="header-tag">للعيد الثامن — العروض الحالية</div>
+<h1>حاسبة عروض ليدي طبطب</h1>
+<p class="sub">اختاري المنتجات والحاسبة هتقارن لك بين العرضين.</p>
+</header>
+
+<section class="card">
+<div class="title"><span class="step">١</span> اختاري المنتجات</div>
+<input id="search" type="search" placeholder="دوري على منتج...">
+<div id="tabs" class="tabs"></div>
+<div id="products" class="products"></div>
+</section>
+
+<section class="card">
+<div class="title"><span class="step">٢</span> سلة الاختيار</div>
+<div id="cart"><div class="empty">لسه ماحطيتيش منتجات</div></div>
+</section>
+
+<section id="results"></section>
+<button id="reset" class="reset">مسح الاختيار كله</button>
+</main>
+
+<div id="cartBar" class="cart-bar">
+<div class="cart-bar-inner">
+<div class="cart-bar-info">
+<span class="cart-bar-count" id="cartBarCount"></span>
+<span class="cart-bar-total" id="cartBarTotal"></span>
+</div>
+<button class="cart-bar-btn" id="cartBarBtn">قارن العروض</button>
+</div>
+</div>
+
+<script>
+(function() {
+"use strict";
+
+var PRODUCTS = [
+["Classic Body Butter 400g","بادي بتر 400 جم",415],["Classic Body Butter 150g","بادي بتر 150 جم",215],["Booty Oil","بوتي أويل",420],["Facial Cleanser with Green Tea","غسول الوجه بالشاي الأخضر",320],["Fluffy Hair Balm","فلافي هير بالم",285],["Hyaluronic Acid and Collagen Cream","كريم الهيالورونيك والكولاچين",395],["Juju Serum 120ml","سيروم چوچو ١٢٠ مل",310],["Juju Serum 60ml","سيروم چوچو ٦٠ مل",185],["Bright All Night Vitamin C Serum","سيروم فيتامين سي - برايت أول نايت",475],["Willow Plump","ويللو بلامب",475],["Willow Flow (Face Mist)","ويللو فلو - ميست الوجه",465],["Willow Cleanser","ويللو كلينزر",425],["Willow Set","مجموعة ويللو",900],["Complete Willow Set","مجموعة ويللو الكاملة",1365],["Solid Perfumes","برفيوم صلب",225],["SunFriend Sunscreen","صن فريند - واقي الشمس",385],["Perdita Creamy Body Scrub","سكرب الجسم بيرديتا",465],["Damp Plump","دامب بلامب",425],["Banana Hair Mask","ماسك الموز للشعر",225],["Natural Moroccan Soap","صابون مغربي",225],["Apple Glare Vitamin C Cleanser","أبل جلير - غسول فيتامين سي",415],["Body Milk","بادي ميلك",420],["Scalp + Hair Leave-In Cream","كريم ليف-إن Scalp+Hair",579],["Scalp + Hair Anti-Hair Loss Shampoo","شامبو Scalp+Hair ضد التساقط",475],["Lady Tabtab Shampoo","شامبو ليدي طبطب",390],["Classic Body Scrub","سكرب الجسم ناعومي",365],["Anti-Hair Loss Spray","سبراي ضد تساقط الشعر",645],["LipLam","مرطب الشفاه",275],["Body Wash","غسول الجسم",275],["Glow Up Bubba Serum","سيروم بوبا",295],["Glow Up Mellia Serum","سيروم ميليا",285],["Glow Up Lilly Serum","سيروم لي لي",320],["Bubba - Clarifying Face Oil","بوبا - زيت الوجه المنقي",365],["TabTab Deo - Black Cat","مزيل عرق - بلاك كات",440],["TabTab Deo - Miss Berry","مزيل عرق - ميس بيري",440],["TabTab Deo - On Green","مزيل عرق - أون جرين",410],["TabTab Deo - Miss Ice","مزيل عرق - ميس آيس",410],["TabTab Deo - Sugar Mami","مزيل عرق - شوجر مامي",420],["Pedicure Bath Salts","أملاح الباديكير",275],["Body Splash 50ml","بودي سبلاش ٥٠ مل",225],["Mist Perfume - Nomi Grace","ميست برفيوم - نومي جريس",440],["Mist Perfume - Love Bomb","ميست برفيوم - لاڤ بمب",440],["Mist Perfume - Black Cat","ميست برفيوم - بلاك كات",440],["Mist Perfume - Miss Berry","ميست برفيوم - ميس بيري",440],["Mist Perfume - Miss Ice","ميست برفيوم - ميس آيس",410],["Mist Perfume - Sugar Mami","ميست برفيوم - شوجر مامي",420],["TabTab FiberHance Scalp+Hair","طبطب فايبرهانس",620],["TabTab Glaze - Body Link","طبطب جليز - بودي لينك",799],["TabTab Glaze - Body Link Plus","طبطب جليز - بودي لينك بلس",899],["TabTab Daily Bag","حقيبة طبطب اليومية",225],["TabTab Gift Box","بوكس الهدايا",820],["Black Cat Box","بلاك كات بوكس",1345],["Miss Berry Box","ميس بيري بوكس",1300],["Sugar Mami Box","شوجر مامي بوكس",1260],["Miss Ice Box","ميس آيس بوكس",1240],["Gift Wrap","تغليف هدية",100],["Centella Relief Up Biphase (Cleanser)","سنتيلا - غسول بايفيز",630],["Centella Relief Up Refine (Toner)","سنتيلا - تونر ريفاين",530],["Centella Relief Up Plump (Cream)","سنتيلا - كريم بلامب",660],["Centella Relief Up Bundle","مجموعة سنتيلا الكاملة",1820],["Core Calm Set (Centella)","سنتيلا - كور كالم سيت",1290],["Barrier Support Set (Centella)","سنتيلا - باريير سبورت سيت",1190],["Scalp + Hair Collection","مجموعة Scalp+Hair",1700],["Bridal Box","بوكس العروسة",2425],["Facial Cleanser + Hyaluronic Acid Set","غسول + كريم هيالورونيك",715],["Facial Cleanser + Damp Plump Set","غسول + دامب بلامب",745]
+].map(function(p,i) {
+  return {id:i,en:p[0],ar:p[1],price:Number(p[2])};
+});
+
+var CATS = [
+  ["all","الكل"],
+  ["face","بشرة"],
+  ["hair","شعر"],
+  ["body","جسم"],
+  ["fragrance","عطور"],
+  ["sets","سيتس وبوكسات"]
+];
+
+var activeCat="all";
+var search="";
+var cart={};
+
+function money(n) {
+  return Math.round(n).toLocaleString("en-US")+" ج.م";
+}
+
+function matchesCategory(p,key) {
+  if(key==="all") return true;
+  var s=p.ar+" "+p.en;
+  if(key==="face") return /سيروم|غسول|كريم|سنتيلا|ويللو|بلامب|ميست الوجه|هيالورونيك|بوبا|صن فريند/i.test(s);
+  if(key==="hair") return /شعر|شامبو|هير|فايبرهانس|تساقط|جوچو|چوچو/i.test(s);
+  if(key==="body") return /جسم|بادي|صابون|باديكير|جليز|بوتي/i.test(s);
+  if(key==="fragrance") return /برفيوم|عرق|سبلاش|ميست/i.test(s);
+  if(key==="sets") return /بوكس|مجموعة|سيت|هدية/i.test(s);
+  return true;
+}
+
+function renderTabs() {
+  var box=document.getElementById("tabs");
+  box.innerHTML="";
+  CATS.forEach(function(c) {
+    var b=document.createElement("button");
+    b.textContent=c[1];
+    if(c[0]===activeCat) b.className="active";
+    b.onclick=function(){activeCat=c[0];renderTabs();renderProducts();};
+    box.appendChild(b);
+  });
+}
+
+function renderProducts() {
+  var box=document.getElementById("products");
+  box.innerHTML="";
+  var term=search.toLowerCase();
+  var found=0;
+
+  PRODUCTS.forEach(function(p) {
+    if(!matchesCategory(p,activeCat)) return;
+    if(term && p.ar.indexOf(search)===-1 && p.en.toLowerCase().indexOf(term)===-1) return;
+
+    found++;
+    var row=document.createElement("div");
+    row.className="product";
+
+    var info=document.createElement("div");
+    var name=document.createElement("div");
+    name.className="name";
+    name.textContent=p.ar;
+    var price=document.createElement("div");
+    price.className="price";
+    price.textContent=money(p.price);
+    info.appendChild(name);
+    info.appendChild(price);
+
+    var qty=document.createElement("div");
+    qty.className="qty";
+
+    var minus=document.createElement("button");
+    minus.textContent="−";
+    minus.onclick=function(){changeQty(p.id,-1);};
+
+    var num=document.createElement("b");
+    num.id="q-"+p.id;
+    num.textContent=cart[p.id]||0;
+
+    var plus=document.createElement("button");
+    plus.textContent="+";
+    plus.onclick=function(){changeQty(p.id,1);};
+
+    qty.appendChild(minus); qty.appendChild(num); qty.appendChild(plus);
+    row.appendChild(info); row.appendChild(qty);
+    box.appendChild(row);
+  });
+
+  if(!found) box.innerHTML='<div class="empty">مفيش منتجات مطابقة</div>';
+}
+
+function changeQty(id,delta) {
+  var next=(cart[id]||0)+delta;
+  if(next<=0) delete cart[id];
+  else cart[id]=next;
+  renderProducts();
+  renderCart();
+  renderResults();
+  renderCartBar();
+  bumpQty(id);
+}
+
+function bumpQty(id) {
+  var el=document.getElementById("q-"+id);
+  if(!el) return;
+  el.classList.remove("bump");
+  void el.offsetWidth;
+  el.classList.add("bump");
+}
+
+function renderCart() {
+  var box=document.getElementById("cart");
+  var ids=Object.keys(cart);
+  if(!ids.length) {
+    box.innerHTML='<div class="empty">لسه ماحطيتيش منتجات</div>';
+    return;
+  }
+
+  var total=0,qtyTotal=0;
+  box.innerHTML="";
+  ids.forEach(function(id) {
+    var p=PRODUCTS[Number(id)], q=cart[id];
+    total += p.price*q;
+    qtyTotal += q;
+    var row=document.createElement("div");
+    row.className="cartrow";
+    row.innerHTML="<b>"+p.ar+"</b><span>"+q+" × "+money(p.price)+"</span>";
+    box.appendChild(row);
+  });
+
+  var totalRow=document.createElement("div");
+  totalRow.className="cartrow total";
+  totalRow.innerHTML="<span>عدد المنتجات</span><span>"+qtyTotal+"</span>";
+  box.appendChild(totalRow);
+
+  var sum=document.createElement("div");
+  sum.className="total";
+  sum.textContent="الإجمالي قبل الخصم: "+money(total);
+  box.appendChild(sum);
+}
+
+function renderCartBar() {
+  var bar=document.getElementById("cartBar");
+  var ids=Object.keys(cart);
+  if(!ids.length) { bar.classList.remove("visible"); return; }
+  bar.classList.add("visible");
+
+  var total=0,qtyTotal=0;
+  ids.forEach(function(id) {
+    var p=PRODUCTS[Number(id)], q=cart[id];
+    total += p.price*q;
+    qtyTotal += q;
+  });
+  document.getElementById("cartBarCount").textContent=qtyTotal+" منتج";
+  document.getElementById("cartBarTotal").textContent=money(total);
+}
+
+document.getElementById("cartBarBtn").onclick=function() {
+  var results=document.getElementById("results");
+  if(results.innerHTML) results.scrollIntoView({behavior:"smooth",block:"start"});
+  else document.querySelector(".card").scrollIntoView({behavior:"smooth"});
+};
+
+function allUnits() {
+  var a=[];
+  Object.keys(cart).forEach(function(id) {
+    for(var i=0;i<cart[id];i++) a.push(PRODUCTS[Number(id)].price);
+  });
+  return a.sort(function(a,b){return b-a;});
+}
+
+function buy3Free(a) {
+  var free=0;
+  for(var i=3;i<a.length;i+=4) free+=a[i];
+  return free;
+}
+
+function progressive() {
+  var a=Object.keys(cart).map(function(id){return PRODUCTS[Number(id)].price;});
+  a.sort(function(x,y){return y-x;});
+  var d=0;
+  for(var i=0;i<a.length && i<8;i++) d+=a[i]*0.08*(i+1);
+  return d;
+}
+
+function renderResults() {
+  var box=document.getElementById("results");
+  var units=allUnits();
+  if(!units.length) {box.innerHTML="";return;}
+
+  var total=units.reduce(function(a,b){return a+b;},0);
+  var d1=buy3Free(units);
+  var f1=total-d1;
+  var d2=progressive();
+  var f2=total-d2;
+  var first=f1<f2;
+  var equal=f1===f2;
+  var maxSave=Math.max(d1,d2)||1;
+
+  box.innerHTML=
+    '<div class="offer '+(first&&!equal?"best":"")+'">'+
+    (first&&!equal?'<span class="badge">الأوفر لك</span>':"")+
+    '<h3>اشتري ٣ يجي الرابع فري</h3>'+
+    '<p class="sub">أرخص منتج في كل ٤ منتجات بيبقى مجاني.</p>'+
+    '<div class="offer-price">'+money(f1)+'</div>'+
+    '<div class="save">التوفير: '+money(d1)+'</div>'+
+    '<div class="savings-bar"><div class="fill" style="width:'+Math.round(d1/maxSave*100)+'%"></div></div></div>'+
+
+    '<div class="offer '+(!first&&!equal?"best":"")+'">'+
+    (!first&&!equal?'<span class="badge">الأوفر لك</span>':"")+
+    '<h3>الخصم التصاعدي ٨٪</h3>'+
+    '<p class="sub">أغلى منتج ٨٪، اللي بعده ١٦٪، وهكذا حتى ٦٤٪ لأول ٨ منتجات مختلفة.</p>'+
+    '<div class="offer-price">'+money(f2)+'</div>'+
+    '<div class="save">التوفير: '+money(d2)+'</div>'+
+    '<div class="savings-bar"><div class="fill" style="width:'+Math.round(d2/maxSave*100)+'%"></div></div></div>'+
+
+    '<div class="verdict">'+
+    (equal ? "العرضين نفس السعر تقريبًا: <b>"+money(f1)+"</b>."
+           : "الأوفر لك هو <b>"+(first?"اشتري ٣ يجي الرابع فري":"الخصم التصاعدي ٨٪")+
+             "</b>، والفرق "+money(Math.abs(f1-f2))+"." )+
+    '</div>'+
+    '<small>ملاحظة: في الخصم التصاعدي، قطعة واحدة فقط من كل منتج تدخل في ترتيب الخصم؛ القطع الإضافية من نفس المنتج تكون بالسعر الكامل.</small>';
+}
+
+document.getElementById("search").oninput=function(e) {
+  search=e.target.value;
+  renderProducts();
+};
+
+document.getElementById("reset").onclick=function() {
+  cart={};
+  renderProducts();
+  renderCart();
+  renderResults();
+  renderCartBar();
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+
+renderTabs();
+renderProducts();
+renderCart();
+renderResults();
+renderCartBar();
+})();
+</script>
+</body>
+</html>

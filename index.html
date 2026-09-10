@@ -316,14 +316,23 @@ small{color:var(--muted);display:block;margin-top:10px;line-height:1.7;font-size
 </header>
 
 <section class="card">
-<div class="title"><span class="step">١</span> اختاري المنتجات</div>
+<div class="title"><span class="step">١</span> هتحسبي إزاي؟</div>
+<div id="modeTabs" class="tabs"></div>
+<div id="peopleControls" style="display:none;margin-top:10px">
+  <div id="peopleCountTabs" class="tabs"></div>
+  <div id="personTabs" class="tabs"></div>
+</div>
+</section>
+
+<section class="card">
+<div class="title"><span class="step">٢</span> اختاري المنتجات</div>
 <input id="search" type="search" placeholder="دوري على منتج...">
 <div id="tabs" class="tabs"></div>
 <div id="products" class="products"></div>
 </section>
 
 <section class="card">
-<div class="title"><span class="step">٢</span> سلة الاختيار</div>
+<div class="title"><span class="step">٣</span> سلة الاختيار</div>
 <div id="cart"><div class="empty">لسه ماحطيتيش منتجات</div></div>
 </section>
 
@@ -346,7 +355,46 @@ small{color:var(--muted);display:block;margin-top:10px;line-height:1.7;font-size
 "use strict";
 
 var PRODUCTS = [
-["Classic Body Butter 400g","بادي بتر 400 جم",415],["Classic Body Butter 150g","بادي بتر 150 جم",215],["Booty Oil","بوتي أويل",420],["Facial Cleanser with Green Tea","غسول الوجه بالشاي الأخضر",320],["Fluffy Hair Balm","فلافي هير بالم",285],["Hyaluronic Acid and Collagen Cream","كريم الهيالورونيك والكولاچين",395],["Juju Serum 120ml","سيروم چوچو ١٢٠ مل",310],["Juju Serum 60ml","سيروم چوچو ٦٠ مل",185],["Bright All Night Vitamin C Serum","سيروم فيتامين سي - برايت أول نايت",475],["Willow Plump","ويللو بلامب",475],["Willow Flow (Face Mist)","ويللو فلو - ميست الوجه",465],["Willow Cleanser","ويللو كلينزر",425],["Willow Set","مجموعة ويللو",900],["Complete Willow Set","مجموعة ويللو الكاملة",1365],["Solid Perfumes","برفيوم صلب",225],["SunFriend Sunscreen","صن فريند - واقي الشمس",385],["Perdita Creamy Body Scrub","سكرب الجسم بيرديتا",465],["Damp Plump","دامب بلامب",425],["Banana Hair Mask","ماسك الموز للشعر",225],["Natural Moroccan Soap","صابون مغربي",225],["Apple Glare Vitamin C Cleanser","أبل جلير - غسول فيتامين سي",415],["Body Milk","بادي ميلك",420],["Scalp + Hair Leave-In Cream","كريم ليف-إن Scalp+Hair",579],["Scalp + Hair Anti-Hair Loss Shampoo","شامبو Scalp+Hair ضد التساقط",475],["Lady Tabtab Shampoo","شامبو ليدي طبطب",390],["Classic Body Scrub","سكرب الجسم ناعومي",365],["Anti-Hair Loss Spray","سبراي ضد تساقط الشعر",645],["LipLam","مرطب الشفاه",275],["Body Wash","غسول الجسم",275],["Glow Up Bubba Serum","سيروم بوبا",295],["Glow Up Mellia Serum","سيروم ميليا",285],["Glow Up Lilly Serum","سيروم لي لي",320],["Bubba - Clarifying Face Oil","بوبا - زيت الوجه المنقي",365],["TabTab Deo - Black Cat","مزيل عرق - بلاك كات",440],["TabTab Deo - Miss Berry","مزيل عرق - ميس بيري",440],["TabTab Deo - On Green","مزيل عرق - أون جرين",410],["TabTab Deo - Miss Ice","مزيل عرق - ميس آيس",410],["TabTab Deo - Sugar Mami","مزيل عرق - شوجر مامي",420],["Pedicure Bath Salts","أملاح الباديكير",275],["Body Splash 50ml","بودي سبلاش ٥٠ مل",225],["Mist Perfume - Nomi Grace","ميست برفيوم - نومي جريس",440],["Mist Perfume - Love Bomb","ميست برفيوم - لاڤ بمب",440],["Mist Perfume - Black Cat","ميست برفيوم - بلاك كات",440],["Mist Perfume - Miss Berry","ميست برفيوم - ميس بيري",440],["Mist Perfume - Miss Ice","ميست برفيوم - ميس آيس",410],["Mist Perfume - Sugar Mami","ميست برفيوم - شوجر مامي",420],["TabTab FiberHance Scalp+Hair","طبطب فايبرهانس",620],["TabTab Glaze - Body Link","طبطب جليز - بودي لينك",799],["TabTab Glaze - Body Link Plus","طبطب جليز - بودي لينك بلس",899],["TabTab Daily Bag","حقيبة طبطب اليومية",225],["TabTab Gift Box","بوكس الهدايا",820],["Black Cat Box","بلاك كات بوكس",1345],["Miss Berry Box","ميس بيري بوكس",1300],["Sugar Mami Box","شوجر مامي بوكس",1260],["Miss Ice Box","ميس آيس بوكس",1240],["Gift Wrap","تغليف هدية",100],["Centella Relief Up Biphase (Cleanser)","سنتيلا - غسول بايفيز",630],["Centella Relief Up Refine (Toner)","سنتيلا - تونر ريفاين",530],["Centella Relief Up Plump (Cream)","سنتيلا - كريم بلامب",660],["Centella Relief Up Bundle","مجموعة سنتيلا الكاملة",1820],["Core Calm Set (Centella)","سنتيلا - كور كالم سيت",1290],["Barrier Support Set (Centella)","سنتيلا - باريير سبورت سيت",1190],["Scalp + Hair Collection","مجموعة Scalp+Hair",1700],["Bridal Box","بوكس العروسة",2425],["Facial Cleanser + Hyaluronic Acid Set","غسول + كريم هيالورونيك",715],["Facial Cleanser + Damp Plump Set","غسول + دامب بلامب",745]
+["Classic Body Butter 400g - سي (SEE)","زبدة الجسم 400 جم - سي",475],
+["Classic Body Butter 400g - لاف (Love)","زبدة الجسم 400 جم - لاف",495],
+["Classic Body Butter 400g - برديتا (Perdita)","زبدة الجسم 400 جم - برديتا",495],
+["Classic Body Butter 400g - ناعومي (Naeomi)","زبدة الجسم 400 جم - ناعومي",520],
+["Classic Body Butter 400g - مسك وعود","زبدة الجسم 400 جم - المسك والعود",475],
+["Classic Body Butter 400g - بدون رائحة","زبدة الجسم 400 جم - بدون رائحة",415],
+["Classic Body Butter 150g - سي (SEE)","زبدة الجسم 150 جم - سي",215],
+["Classic Body Butter 150g - لاف (Love)","زبدة الجسم 150 جم - لاف",215],
+["Classic Body Butter 150g - برديتا (Perdita)","زبدة الجسم 150 جم - برديتا",215],
+["Classic Body Butter 150g - ناعومي (Naeomi)","زبدة الجسم 150 جم - ناعومي",215],
+["Classic Body Butter 150g - مسك وعود","زبدة الجسم 150 جم - المسك والعود",215],
+["Classic Body Butter 150g - بدون رائحة","زبدة الجسم 150 جم - بدون رائحة",215],
+["Booty Oil","بوتي أويل",420],["Facial Cleanser with Green Tea","غسول الوجه بالشاي الأخضر",320],["Fluffy Hair Balm","فلافي هير بالم",285],["Hyaluronic Acid and Collagen Cream","كريم الهيالورونيك والكولاچين",395],["Juju Serum 120ml","سيروم چوچو ١٢٠ مل",310],["Juju Serum 60ml","سيروم چوچو ٦٠ مل",185],["Bright All Night Vitamin C Serum","سيروم فيتامين سي - برايت أول نايت",475],["Willow Plump","ويللو بلامب",475],
+["Willow Flow 250ml","ويللو فلو - ميست الوجه ٢٥٠ مل",465],
+["Willow Flow 125ml","ويللو فلو - ميست الوجه ١٢٥ مل",465],
+["Willow Cleanser","ويللو كلينزر",425],
+["Solid Perfume - La Vie Est Belle","مخمرية - لافي إيست بيل",225],
+["Solid Perfume - Gucci","مخمرية - جوتشي",225],
+["Solid Perfume - Love Is Heavenly","مخمرية - لاڤ إز هيفنلي",225],
+["Solid Perfume - Anaml Wardeya","مخمرية - أنامل ورديه",225],
+["Solid Perfume - Golden Dust","مخمرية - جولدن دست",225],
+["Solid Perfume - Midnight","مخمرية - ميدنايت",225],
+["Solid Perfume - Burberry Her","مخمرية - بربري هير",225],
+["Solid Perfume - Omani Oud","مخمرية - عماني عود",225],
+["SunFriend Sunscreen","صن فريند - واقي الشمس",385],["Perdita Creamy Body Scrub","سكرب الجسم بيرديتا",465],
+["Damp Plump 120g","دامب بلامب ١٢٠ جم",425],
+["Damp Plump 50g","دامب بلامب ٥٠ جم",425],
+["Banana Hair Mask","ماسك الموز للشعر",225],
+["Natural Moroccan Soap","صابون مغربي - لوحده",225],
+["Natural Moroccan Soap + Loofah","صابون مغربي + ليفة (سعر تقديري)",290],
+["Moroccan Loofah","ليفة مغربية",65],
+["Apple Glare Vitamin C Cleanser","أبل جلير - غسول فيتامين سي",415],
+["Body Milk - Love Bomb","بادي ميلك - لاڤ بمب",420],
+["Body Milk - Sugar Mami","بادي ميلك - شوجر مامي",420],
+["Body Milk - Miss Ice","بادي ميلك - ميس آيس",420],
+["Body Milk - Black Cat","بادي ميلك - بلاك كات",420],
+["Body Milk - Miss Berry","بادي ميلك - ميس بيري",420],
+["Body Milk - Tiny Cherry","بادي ميلك - تايني تشيري",420],
+["Body Milk - Nomi Grace","بادي ميلك - نومي جريس",420],
+["Scalp + Hair Leave-In Cream","كريم ليف-إن Scalp+Hair",579],["Scalp + Hair Anti-Hair Loss Shampoo","شامبو Scalp+Hair ضد التساقط",475],["Lady Tabtab Shampoo","شامبو ليدي طبطب",390],["Classic Body Scrub","سكرب الجسم ناعومي",365],["Anti-Hair Loss Spray","سبراي ضد تساقط الشعر",645],["LipLam","مرطب الشفاه",365],["Body Wash","غسول الجسم",275],["Glow Up Bubba Serum","سيروم بوبا",295],["Glow Up Mellia Serum","سيروم ميليا",285],["Glow Up Lilly Serum","سيروم لي لي",320],["Bubba - Clarifying Face Oil","بوبا - زيت الوجه المنقي",365],["TabTab Deo - Black Cat","مزيل عرق - بلاك كات",440],["TabTab Deo - Miss Berry","مزيل عرق - ميس بيري",440],["TabTab Deo - On Green","مزيل عرق - أون جرين",410],["TabTab Deo - Miss Ice","مزيل عرق - ميس آيس",410],["TabTab Deo - Sugar Mami","مزيل عرق - شوجر مامي",420],["Pedicure Bath Salts","أملاح الباديكير",275],["Body Splash 50ml","بودي سبلاش ٥٠ مل",225],["Mist Perfume - Nomi Grace","ميست برفيوم - نومي جريس",440],["Mist Perfume - Love Bomb","ميست برفيوم - لاڤ بمب",440],["Mist Perfume - Black Cat","ميست برفيوم - بلاك كات",440],["Mist Perfume - Miss Berry","ميست برفيوم - ميس بيري",440],["Mist Perfume - Miss Ice","ميست برفيوم - ميس آيس",410],["Mist Perfume - Sugar Mami","ميست برفيوم - شوجر مامي",420],["TabTab FiberHance Scalp+Hair","طبطب فايبرهانس",620],["TabTab Glaze - Body Link","طبطب جليز - بودي لينك",799],["TabTab Glaze - Body Link Plus","طبطب جليز - بودي لينك بلس",899],["TabTab Daily Bag","حقيبة طبطب اليومية",225],["Centella Relief Up Biphase (Cleanser)","سنتيلا - غسول بايفيز",630],["Centella Relief Up Refine (Toner)","سنتيلا - تونر ريفاين",530],["Centella Relief Up Plump (Cream)","سنتيلا - كريم بلامب",660]
 ].map(function(p,i) {
   return {id:i,en:p[0],ar:p[1],price:Number(p[2])};
 });
@@ -356,13 +404,22 @@ var CATS = [
   ["face","بشرة"],
   ["hair","شعر"],
   ["body","جسم"],
-  ["fragrance","عطور"],
-  ["sets","سيتس وبوكسات"]
+  ["fragrance","عطور"]
 ];
 
 var activeCat="all";
 var search="";
 var cart={};
+
+var mode="single"; // "single" | "split"
+var numPeople=2;
+var currentPerson=0;
+var personCarts=[{},{},{}];
+var PERSON_LABELS=["الشخص ١","الشخص ٢","الشخص ٣"];
+
+function activeCart(){
+  return mode==="single" ? cart : personCarts[currentPerson];
+}
 
 function money(n) {
   return Math.round(n).toLocaleString("en-US")+" ج.م";
@@ -373,10 +430,77 @@ function matchesCategory(p,key) {
   var s=p.ar+" "+p.en;
   if(key==="face") return /سيروم|غسول|كريم|سنتيلا|ويللو|بلامب|ميست الوجه|هيالورونيك|بوبا|صن فريند/i.test(s);
   if(key==="hair") return /شعر|شامبو|هير|فايبرهانس|تساقط|جوچو|چوچو/i.test(s);
-  if(key==="body") return /جسم|بادي|صابون|باديكير|جليز|بوتي/i.test(s);
-  if(key==="fragrance") return /برفيوم|عرق|سبلاش|ميست/i.test(s);
-  if(key==="sets") return /بوكس|مجموعة|سيت|هدية/i.test(s);
+  if(key==="body") return /جسم|بادي|صابون|باديكير|جليز|بوتي|زبدة|ليفة/i.test(s);
+  if(key==="fragrance") return /برفيوم|عرق|سبلاش|ميست|مخمرية/i.test(s);
   return true;
+}
+
+function renderModeTabs(){
+  var box=document.getElementById("modeTabs");
+  box.innerHTML="";
+  [["single","لوحدك"],["split","قسمة بين أصحاب"]].forEach(function(m){
+    var b=document.createElement("button");
+    b.textContent=m[1];
+    if(mode===m[0]) b.className="active";
+    b.onclick=function(){
+      mode=m[0];
+      currentPerson=0;
+      renderModeTabs();
+      renderPeopleControls();
+      renderAll();
+    };
+    box.appendChild(b);
+  });
+}
+
+function renderPeopleControls(){
+  var wrap=document.getElementById("peopleControls");
+  var countBox=document.getElementById("peopleCountTabs");
+  var personBox=document.getElementById("personTabs");
+  if(mode!=="split"){ wrap.style.display="none"; return; }
+  wrap.style.display="block";
+
+  countBox.innerHTML="";
+  [2,3].forEach(function(n){
+    var b=document.createElement("button");
+    b.textContent=n+" أشخاص";
+    if(numPeople===n) b.className="active";
+    b.onclick=function(){
+      numPeople=n;
+      if(currentPerson>=numPeople) currentPerson=0;
+      if(n===2) personCarts[2]={};
+      renderPeopleControls();
+      renderAll();
+    };
+    countBox.appendChild(b);
+  });
+
+  personBox.innerHTML="";
+  for(var i=0;i<numPeople;i++){
+    (function(i){
+      var b=document.createElement("button");
+      var c=personCarts[i];
+      var q=Object.keys(c).reduce(function(s,id){return s+c[id];},0);
+      var t=Object.keys(c).reduce(function(s,id){return s+PRODUCTS[Number(id)].price*c[id];},0);
+      b.innerHTML=PERSON_LABELS[i]+(q?" · "+q+" · "+money(t):"");
+      if(currentPerson===i) b.className="active";
+      b.onclick=function(){
+        currentPerson=i;
+        renderPeopleControls();
+        renderProducts();
+        renderCart();
+        renderCartBar();
+      };
+      personBox.appendChild(b);
+    })(i);
+  }
+}
+
+function renderAll(){
+  renderProducts();
+  renderCart();
+  renderResults();
+  renderCartBar();
 }
 
 function renderTabs() {
@@ -424,7 +548,7 @@ function renderProducts() {
 
     var num=document.createElement("b");
     num.id="q-"+p.id;
-    num.textContent=cart[p.id]||0;
+    num.textContent=activeCart()[p.id]||0;
 
     var plus=document.createElement("button");
     plus.textContent="+";
@@ -439,13 +563,15 @@ function renderProducts() {
 }
 
 function changeQty(id,delta) {
-  var next=(cart[id]||0)+delta;
-  if(next<=0) delete cart[id];
-  else cart[id]=next;
+  var c=activeCart();
+  var next=(c[id]||0)+delta;
+  if(next<=0) delete c[id];
+  else c[id]=next;
   renderProducts();
   renderCart();
   renderResults();
   renderCartBar();
+  if(mode==="split") renderPeopleControls();
   bumpQty(id);
 }
 
@@ -459,6 +585,41 @@ function bumpQty(id) {
 
 function renderCart() {
   var box=document.getElementById("cart");
+
+  if(mode==="split"){
+    var any=false;
+    box.innerHTML="";
+    for(var p=0;p<numPeople;p++){
+      var c=personCarts[p];
+      var ids=Object.keys(c);
+      if(!ids.length) continue;
+      any=true;
+      var head=document.createElement("div");
+      head.style.fontWeight="800";
+      head.style.marginTop="8px";
+      head.style.fontSize="13.5px";
+      head.style.color="var(--primary-dark)";
+      head.textContent=PERSON_LABELS[p];
+      box.appendChild(head);
+      var pt=0;
+      ids.forEach(function(id){
+        var prod=PRODUCTS[Number(id)], q=c[id];
+        pt+=prod.price*q;
+        var row=document.createElement("div");
+        row.className="cartrow";
+        row.innerHTML="<b>"+prod.ar+"</b><span>"+q+" × "+money(prod.price)+"</span>";
+        box.appendChild(row);
+      });
+      var sub=document.createElement("div");
+      sub.className="cartrow";
+      sub.style.fontWeight="700";
+      sub.innerHTML="<span>إجمالي "+PERSON_LABELS[p]+"</span><span>"+money(pt)+"</span>";
+      box.appendChild(sub);
+    }
+    if(!any) box.innerHTML='<div class="empty">لسه محدش حاطط منتجات</div>';
+    return;
+  }
+
   var ids=Object.keys(cart);
   if(!ids.length) {
     box.innerHTML='<div class="empty">لسه ماحطيتيش منتجات</div>';
@@ -490,17 +651,19 @@ function renderCart() {
 
 function renderCartBar() {
   var bar=document.getElementById("cartBar");
-  var ids=Object.keys(cart);
+  var c=activeCart();
+  var ids=Object.keys(c);
   if(!ids.length) { bar.classList.remove("visible"); return; }
   bar.classList.add("visible");
 
   var total=0,qtyTotal=0;
   ids.forEach(function(id) {
-    var p=PRODUCTS[Number(id)], q=cart[id];
+    var p=PRODUCTS[Number(id)], q=c[id];
     total += p.price*q;
     qtyTotal += q;
   });
-  document.getElementById("cartBarCount").textContent=qtyTotal+" منتج";
+  document.getElementById("cartBarCount").textContent=
+    (mode==="split" ? PERSON_LABELS[currentPerson]+" · " : "")+qtyTotal+" منتج";
   document.getElementById("cartBarTotal").textContent=money(total);
 }
 
@@ -532,8 +695,117 @@ function progressive() {
   return d;
 }
 
+function personSubtotals() {
+  var arr=new Array(numPeople).fill(0);
+  for(var p=0;p<numPeople;p++){
+    var c=personCarts[p];
+    Object.keys(c).forEach(function(id){
+      arr[p]+=PRODUCTS[Number(id)].price*c[id];
+    });
+  }
+  return arr;
+}
+
+function groupPriceList() {
+  var a=[];
+  for(var p=0;p<numPeople;p++){
+    var c=personCarts[p];
+    Object.keys(c).forEach(function(id){
+      for(var i=0;i<c[id];i++) a.push(PRODUCTS[Number(id)].price);
+    });
+  }
+  return a.sort(function(x,y){return y-x;});
+}
+
+function groupProgressiveDiscount() {
+  var seen={};
+  var arr=[];
+  for(var p=0;p<numPeople;p++){
+    var c=personCarts[p];
+    Object.keys(c).forEach(function(id){
+      if(!seen[id]){ seen[id]=true; arr.push(PRODUCTS[Number(id)].price); }
+    });
+  }
+  arr.sort(function(x,y){return y-x;});
+  var d=0;
+  for(var i=0;i<arr.length && i<8;i++) d+=arr[i]*0.08*(i+1);
+  return d;
+}
+
 function renderResults() {
   var box=document.getElementById("results");
+
+  if(mode==="split"){
+    var totalsPerPerson=personSubtotals();
+    var groupTotal=totalsPerPerson.reduce(function(a,b){return a+b;},0);
+    if(!groupTotal){ box.innerHTML=""; return; }
+
+    var units=groupPriceList();
+    var totalFree=buy3Free(units);
+    var totalDisc=groupProgressiveDiscount();
+
+    var finalBuy3PerPerson=totalsPerPerson.map(function(t){return t-totalFree*(t/groupTotal);});
+    var finalBuy3Total=groupTotal-totalFree;
+
+    var finalProgPerPerson=totalsPerPerson.map(function(t){return t-totalDisc*(t/groupTotal);});
+    var finalProgTotal=groupTotal-totalDisc;
+
+    var first=finalBuy3Total<finalProgTotal;
+    var equal=finalBuy3Total===finalProgTotal;
+    var maxSave=Math.max(totalFree,totalDisc)||1;
+
+    var rows="";
+    for(var i=0;i<numPeople;i++){
+      rows+='<tr><td style="padding:8px 4px;font-weight:700">'+PERSON_LABELS[i]+'</td>'+
+        '<td style="padding:8px 4px;color:var(--muted)">'+money(totalsPerPerson[i])+'</td>'+
+        '<td style="padding:8px 4px'+(first&&!equal?';font-weight:800;color:var(--success)':'')+'">'+money(finalBuy3PerPerson[i])+'</td>'+
+        '<td style="padding:8px 4px'+(!first&&!equal?';font-weight:800;color:var(--success)':'')+'">'+money(finalProgPerPerson[i])+'</td></tr>';
+    }
+
+    box.innerHTML=
+      '<div class="offer '+(first&&!equal?"best":"")+'">'+
+      (first&&!equal?'<span class="badge">الأوفر للمجموعة</span>':"")+
+      '<h3>اشتري ٣ يجي الرابع فري</h3>'+
+      '<p class="sub">أرخص منتج في كل ٤ منتجات (من كل الأشخاص مع بعض) بيبقى مجاني.</p>'+
+      '<div class="offer-price">'+money(finalBuy3Total)+'</div>'+
+      '<div class="save">التوفير: '+money(totalFree)+'</div>'+
+      '<div class="savings-bar"><div class="fill" style="width:'+Math.round(totalFree/maxSave*100)+'%"></div></div></div>'+
+
+      '<div class="offer '+(!first&&!equal?"best":"")+'">'+
+      (!first&&!equal?'<span class="badge">الأوفر للمجموعة</span>':"")+
+      '<h3>الخصم التصاعدي ٨٪</h3>'+
+      '<p class="sub">أغلى منتج ٨٪، اللي بعده ١٦٪، وهكذا حتى ٦٤٪ لأول ٨ منتجات مختلفة من كل السلة المشتركة.</p>'+
+      '<div class="offer-price">'+money(finalProgTotal)+'</div>'+
+      '<div class="save">التوفير: '+money(totalDisc)+'</div>'+
+      '<div class="savings-bar"><div class="fill" style="width:'+Math.round(totalDisc/maxSave*100)+'%"></div></div></div>'+
+
+      '<div class="verdict">'+
+      (equal ? "العرضين نفس السعر تقريبًا للمجموعة: <b>"+money(finalBuy3Total)+"</b>."
+             : "الأوفر للمجموعة هو <b>"+(first?"اشتري ٣ يجي الرابع فري":"الخصم التصاعدي ٨٪")+
+               "</b>، والفرق "+money(Math.abs(finalBuy3Total-finalProgTotal))+"." )+
+      '</div>'+
+
+      '<div class="card" style="margin-bottom:14px">'+
+      '<div class="title">توزيع الدفع بين الأشخاص</div>'+
+      '<div style="overflow-x:auto">'+
+      '<table style="width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap">'+
+      '<tr style="border-bottom:1px solid var(--border)">'+
+      '<th style="text-align:right;padding:8px 4px">الشخص</th>'+
+      '<th style="text-align:right;padding:8px 4px">قبل الخصم</th>'+
+      '<th style="text-align:right;padding:8px 4px">٣+١ فري</th>'+
+      '<th style="text-align:right;padding:8px 4px">تصاعدي ٨٪</th></tr>'+
+      rows+
+      '<tr style="border-top:2px solid var(--border);font-weight:800">'+
+      '<td style="padding:8px 4px">الإجمالي</td>'+
+      '<td style="padding:8px 4px">'+money(groupTotal)+'</td>'+
+      '<td style="padding:8px 4px">'+money(finalBuy3Total)+'</td>'+
+      '<td style="padding:8px 4px">'+money(finalProgTotal)+'</td></tr>'+
+      '</table></div>'+
+      '<small>كل شخص بياخد نفس نسبة الخصم من إجماليه هو (مش سعر منتج معين بالتحديد)، يعني لو الخصم الكلي وفّر مثلاً ١٥٪ من فاتورة المجموعة، كل واحد هيوفر ١٥٪ من فاتورته هو بالظبط — عادل بين الكل بغض النظر مين جاب المنتج الأغلى.</small>'+
+      '</div>';
+    return;
+  }
+
   var units=allUnits();
   if(!units.length) {box.innerHTML="";return;}
 
@@ -577,7 +849,12 @@ document.getElementById("search").oninput=function(e) {
 };
 
 document.getElementById("reset").onclick=function() {
-  cart={};
+  if(mode==="split"){
+    personCarts=[{},{},{}];
+    renderPeopleControls();
+  } else {
+    cart={};
+  }
   renderProducts();
   renderCart();
   renderResults();
@@ -585,6 +862,8 @@ document.getElementById("reset").onclick=function() {
   window.scrollTo({top:0,behavior:"smooth"});
 };
 
+renderModeTabs();
+renderPeopleControls();
 renderTabs();
 renderProducts();
 renderCart();
